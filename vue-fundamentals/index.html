@@ -11,13 +11,26 @@
     <div id="shoppingList">
         <h1>{{ header.toLocaleUpperCase() }}</h1>
 <!--        <input type="text" v-model="header">-->
+        <div>
+            <input type="text" v-model="newItem" placeholder="Add an item" v-on:keyup.enter="items.push(newItem)">
+            <button v-on:click="items.push(newItem)">Save item</button>
+        </div>
+        <ul>
+            <li v-for="item in items">{{ item }}</li>
+        </ul>
     </div>
     <script src="https://unpkg.com/vue@2"></script>
     <script>
         let myApp = new Vue({
           el: '#shoppingList',
           data: {
-            header: "Shopping list app"
+            header: "Shopping list app",
+            newItem: '',
+            items: [
+              '10 party hats',
+              '2 board games',
+              '20 cups',
+            ]
           }
         });
         // in browser console myApp.$data.header
