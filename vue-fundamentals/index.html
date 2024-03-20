@@ -6,6 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shopping List App</title>
+    <style>
+        .strikeout {
+          text-decoration: line-through;
+        }
+    </style>
 </head>
 <body>
     <div id="shoppingList">
@@ -24,8 +29,12 @@
 <!--        <a v-bind:href="newItem">Dynamin Link</a>-->
         <p v-if="items.length === 0">Nice job! You've bought all items!</p>
         <ul>
-<!--            <li v-for="item in items" :key="item.id">{{ item.label }}</li>-->
-            <li v-for="{id, label} in items" :key="id">{{ label }}</li>
+<!--            <li v-for="{id, label, purchased} in items"-->
+            <li v-for="item in items"
+                :class="{ strikeout: item.purchased }"
+                @click="togglePurchased(item)"
+                :key="item.id">{{ item.label }}</li>
+<!--            :class="[ purchased ? 'strikeout' : '' ]"-->
         </ul>
     </div>
     <script src="https://unpkg.com/vue@3"></script>
@@ -38,20 +47,23 @@
               newItem: '',
               newItemPriority: 'low',
               items: [
-                // {id: 1, label: '10 party hats'},
-                // {id: 2, label: '2 board games'},
-                // {id: 3, label: '20 cups'},
+                {id: 1, label: '10 party hats', purchased: false},
+                {id: 2, label: '2 board games', purchased: true},
+                {id: 3, label: '20 cups', purchased: false},
               ]
             }
           },
           methods: {
             saveItem() {
-              this.items.push({id: this.items.length + 1, label: this.newItem});
+              this.items.push({id: this.items.length + 1, label: this.newItem, purchased: false});
               this.newItem = '';
             },
             doEdit(editing) {
               this.editing = editing;
               this.newItem = '';
+            },
+            togglePurchased(item) {
+              item.purchased = !item.purchased;
             }
           }
         }).mount('#shoppingList');
